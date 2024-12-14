@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hold Button Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button:active {
+            background-color: #0056b3;
+        }
+        .timer {
+            margin-top: 20px;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="holdButton">Hold Me</button>
+        <div class="timer">
+            Time Held: <span id="timeDisplay">0.00</span> seconds
+        </div>
+    </div>
+
+    <script>
+        const holdButton = document.getElementById('holdButton');
+        const timeDisplay = document.getElementById('timeDisplay');
+        let startTime = 0;
+        let isHolding = false;
+
+        // Event listener for when the button is pressed down
+        holdButton.addEventListener('mousedown', () => {
+            isHolding = true;
+            startTime = performance.now(); // Get the current time in milliseconds
+        });
+
+        // Event listener for when the button is released
+        holdButton.addEventListener('mouseup', () => {
+            if (isHolding) {
+                const endTime = performance.now(); // Get the current time
+                const timeHeld = (endTime - startTime) / 1000; // Calculate time in seconds
+                timeDisplay.textContent = timeHeld.toFixed(2); // Display time held
+                isHolding = false;
+            }
+        });
+
+        // Touch events for mobile devices
+        holdButton.addEventListener('touchstart', (event) => {
+            event.preventDefault(); // Prevent default behavior
+            isHolding = true;
+            startTime = performance.now();
+        });
+
+        holdButton.addEventListener('touchend', (event) => {
+            if (isHolding) {
+                const endTime = performance.now();
+                const timeHeld = (endTime - startTime) / 1000;
+                timeDisplay.textContent = timeHeld.toFixed(2);
+                isHolding = false;
+            }
+        });
+    </script>
+</body>
+</html>
